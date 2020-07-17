@@ -6,8 +6,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/influxdata/influx-stress/lineprotocol"
-	"github.com/influxdata/influx-stress/write"
+	"github.com/chengshiwen/influx-stress/lineprotocol"
+	"github.com/chengshiwen/influx-stress/write"
 )
 
 // WriteResult contains the latency, status code, and error type
