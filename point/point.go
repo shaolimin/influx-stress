@@ -1,6 +1,7 @@
 package point
 
 import (
+	"math/rand"
 	"sync/atomic"
 	"time"
 
@@ -69,16 +70,14 @@ func (p *point) SetTime(t time.Time) {
 }
 
 // Update increments the value of all of the Int and Float
-// fields by 1.
+// fields randomly.
 func (p *point) Update() {
 	for _, i := range p.Ints {
-		atomic.AddInt64(&i.Value, int64(1))
+		atomic.StoreInt64(&i.Value, rand.Int63n(100))
 	}
 
 	for _, f := range p.Floats {
-		// Need to do something else here
-		// There will be a race here
-		f.Value += 1.0
+		f.Value = rand.ExpFloat64() * 100
 	}
 }
 

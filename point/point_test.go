@@ -30,7 +30,7 @@ func TestPoint(t *testing.T) {
 			return
 		}
 
-		exp := fmt.Sprintf("cpu,host=server user=%vi,system=%vi,busy=%v,wait=%v %v\n", i, i, i, i, testTime.UnixNano())
+		exp := fmt.Sprintf("cpu,host=server user=%vi,system=%vi,busy=%v,wait=%v %v\n", p.Ints[0].Value, p.Ints[1].Value, p.Floats[0].Value, p.Floats[1].Value, testTime.UnixNano())
 		got := string(buf.Bytes())
 
 		if got != exp {
