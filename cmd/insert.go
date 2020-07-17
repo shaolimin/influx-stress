@@ -31,6 +31,7 @@ var (
 	strict                               bool
 	recordStats                          bool
 	tlsSkipVerify                        bool
+	readTimeout, writeTimeout            time.Duration
 )
 
 const (
@@ -67,6 +68,12 @@ func insertRun(cmd *cobra.Command, args []string) {
 	if pps < batchSize {
 		batchSize = pps
 		concurrency = 1
+	}
+	if uint64(seriesN) < batchSize {
+		// otherwise, the tool will generate points with identical timestamp
+		fmt.Fprintf(os.Stderr, "series number(%v) should not be smaller than batch size(%v)\n", seriesN, batchSize)
+		os.Exit(1)
+		return
 	}
 	if !quiet {
 		fmt.Printf("Using point template: %s %s <timestamp>\n", seriesKey, fieldStr)
@@ -175,6 +182,8 @@ func init() {
 	insertCmd.Flags().StringVar(&dump, "dump", "", "Dump to given file instead of writing over HTTP")
 	insertCmd.Flags().BoolVarP(&strict, "strict", "", false, "Strict mode will exit as soon as an error or unexpected status is encountered")
 	insertCmd.Flags().BoolVarP(&tlsSkipVerify, "tls-skip-verify", "", false, "Skip verify in for TLS")
+	insertCmd.Flags().DurationVarP(&readTimeout, "read-timeout", "", 0, "read timeout")
+	insertCmd.Flags().DurationVarP(&writeTimeout, "write-timeout", "", 0, "write timeout")
 }
 
 func client() write.Client {
@@ -187,6 +196,8 @@ func client() write.Client {
 		Precision:       precision,
 		Consistency:     consistency,
 		TLSSkipVerify:   tlsSkipVerify,
+		ReadTimeout:     readTimeout,
+		WriteTimeout:    writeTimeout,
 		Gzip:            gzip != 0,
 	}
 

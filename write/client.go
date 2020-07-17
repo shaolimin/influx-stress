@@ -28,6 +28,8 @@ type ClientConfig struct {
 	Precision       string
 	Consistency     string
 	TLSSkipVerify   bool
+	ReadTimeout     time.Duration
+	WriteTimeout    time.Duration
 
 	Gzip bool
 }
@@ -48,12 +50,13 @@ type client struct {
 }
 
 func NewClient(cfg ClientConfig) Client {
-	var httpClient *fasthttp.Client
+	var httpClient = &fasthttp.Client{
+		ReadTimeout:  cfg.ReadTimeout,
+		WriteTimeout: cfg.WriteTimeout,
+	}
 	if cfg.TLSSkipVerify {
-		httpClient = &fasthttp.Client{
-			TLSConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
+		httpClient.TLSConfig = &tls.Config{
+			InsecureSkipVerify: true,
 		}
 	}
 	return &client{
