@@ -40,7 +40,7 @@ const (
 
 var insertCmd = &cobra.Command{
 	Use:   "insert SERIES FIELDS",
-	Short: "Insert data into InfluxDB", // better descriiption
+	Short: "Insert data into InfluxDB", // better description
 	Long:  "",
 	Run:   insertRun,
 }
@@ -125,7 +125,7 @@ func insertRun(cmd *cobra.Command, args []string) {
 
 			cfg := stress.WriteConfig{
 				BatchSize: batchSize,
-				MaxPoints: pointsN / concurrency, // divide by concurreny
+				MaxPoints: pointsN / concurrency, // divide by concurrency
 				GzipLevel: gzip,
 				Deadline:  time.Now().Add(runtime),
 				Tick:      tick,
@@ -149,7 +149,7 @@ func insertRun(cmd *cobra.Command, args []string) {
 		fmt.Fprintf(os.Stderr, "Error closing client: %v\n", err.Error())
 	}
 
-	sink.Close()
+	defer sink.Close()
 	throughput := int(float64(totalWritten) / totalTime.Seconds())
 	if quiet {
 		fmt.Println(throughput)
@@ -300,6 +300,13 @@ func (s *multiSink) Open() {
 
 func (s *multiSink) run() {
 	const timeFormat = "[2006-01-02 15:04:05]"
+	defer func() {
+		// recover from panic caused by writing to a closed channel
+		if r := recover(); r != nil {
+			fmt.Fprintln(os.Stderr, time.Now().Format(timeFormat), r)
+			return
+		}
+	}()
 	for r := range s.Ch {
 		for _, sink := range s.sinks {
 			select {
@@ -313,6 +320,7 @@ func (s *multiSink) run() {
 
 func (s *multiSink) Close() {
 	s.open = false
+	close(s.Ch)
 	for _, sink := range s.sinks {
 		sink.Close()
 	}
