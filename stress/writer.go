@@ -104,7 +104,7 @@ WRITE_BATCHES:
 			pt.Update()
 		}
 
-		// Avoid timestamp colision when batch size > pts
+		// Avoid timestamp collision when batch size > pts
 		if t.After(tPrev) {
 			tPrev = t
 			continue

@@ -51,8 +51,10 @@ func insertRun(cmd *cobra.Command, args []string) {
 	fieldStr := defaultFieldStr
 	if len(args) >= 1 {
 		seriesKey = args[0]
-		if !strings.Contains(seriesKey, ",") && !strings.Contains(seriesKey, "=") {
-			fmt.Fprintln(os.Stderr, "First positional argument must be a series key, got: ", seriesKey)
+		commaIndex := strings.Index(seriesKey, ",")
+		equalIndex := strings.Index(seriesKey, "=")
+		if !(0 < commaIndex && commaIndex < equalIndex && equalIndex < len(seriesKey)-1) {
+			fmt.Fprintf(os.Stderr, "First positional argument must be a series key such as \"%s\", got: %s\n", defaultSeriesKey, seriesKey)
 			cmd.Usage()
 			os.Exit(1)
 			return
@@ -304,7 +306,7 @@ func (s *multiSink) run() {
 	defer func() {
 		// recover from panic caused by writing to a closed channel
 		if r := recover(); r != nil {
-			fmt.Fprintln(os.Stderr, time.Now().Format(timeFormat), r)
+			// fmt.Fprintln(os.Stderr, time.Now().Format(timeFormat), r)
 			return
 		}
 	}()
