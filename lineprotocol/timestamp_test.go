@@ -36,7 +36,7 @@ func TestTimestamp_WriteTo_Second(t *testing.T) {
 	}
 
 	exp := fmt.Sprintf("%v", testTime.Unix())
-	got := string(buf.Bytes())
+	got := buf.String()
 
 	if got != exp {
 		t.Errorf("Wrong timestamp written. got %v, exp %v", got, exp)
@@ -55,7 +55,7 @@ func TestTimestamp_WriteTo_Nanosecond(t *testing.T) {
 	}
 
 	exp := fmt.Sprintf("%v", testTime.UnixNano())
-	got := string(buf.Bytes())
+	got := buf.String()
 
 	if got != exp {
 		t.Errorf("Wrong timestamp written. got %v, exp %v", got, exp)

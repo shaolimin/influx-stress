@@ -31,7 +31,7 @@ func TestPoint(t *testing.T) {
 		}
 
 		exp := fmt.Sprintf("cpu,host=server user=%vi,system=%vi,busy=%v,wait=%v %v\n", p.Ints[0].Value, p.Ints[1].Value, p.Floats[0].Value, p.Floats[1].Value, testTime.UnixNano())
-		got := string(buf.Bytes())
+		got := buf.String()
 
 		if got != exp {
 			t.Errorf("Wrong data was written. got %v, exp %v", got, exp)

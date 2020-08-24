@@ -1,12 +1,13 @@
 ### Makefile ---
 
+export GO_BUILD=GO111MODULE=on go build -ldflags "-s" github.com/chengshiwen/influx-stress/cmd/influx-stress
 all: build
 
 build:
-	go build github.com/chengshiwen/influx-stress/cmd/influx-stress
+	$(GO_BUILD)
 
 linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s" github.com/chengshiwen/influx-stress/cmd/influx-stress
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO_BUILD)
 
 test:
 	go test -v github.com/chengshiwen/influx-stress/lineprotocol
@@ -19,8 +20,11 @@ help:
 insert:
 	go run cmd/influx-stress/main.go insert -r 10s -f
 
-fmt:
-	find . -name "*.go" -exec go fmt {} \;
+lint:
+	golangci-lint run --enable=golint --disable=errcheck --disable=typecheck
+	goimports -l -w .
+	go fmt ./...
+	go vet ./...
 
 clean:
 	rm -rf influx-stress

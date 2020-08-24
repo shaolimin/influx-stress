@@ -9,7 +9,7 @@ import (
 )
 
 // The point struct implements the lineprotocol.Point interface.
-type point struct {
+type Point struct {
 	seriesKey []byte
 
 	// Note here that Ints and Floats are exported so they can be modified outside
@@ -26,9 +26,9 @@ type point struct {
 }
 
 // New returns a new point without setting the time field.
-func New(sk []byte, ints, floats []string, p lineprotocol.Precision) *point {
+func New(sk []byte, ints, floats []string, p lineprotocol.Precision) *Point {
 	fields := []lineprotocol.Field{}
-	e := &point{
+	e := &Point{
 		seriesKey: sk,
 		time:      lineprotocol.NewTimestamp(p),
 		fields:    fields,
@@ -50,28 +50,28 @@ func New(sk []byte, ints, floats []string, p lineprotocol.Precision) *point {
 }
 
 // Series returns the series key for a point.
-func (p *point) Series() []byte {
+func (p *Point) Series() []byte {
 	return p.seriesKey
 }
 
 // Fields returns the fields for a a point.
-func (p *point) Fields() []lineprotocol.Field {
+func (p *Point) Fields() []lineprotocol.Field {
 	return p.fields
 }
 
 // Time returns the timestamps for a point.
-func (p *point) Time() *lineprotocol.Timestamp {
+func (p *Point) Time() *lineprotocol.Timestamp {
 	return p.time
 }
 
 // SetTime set the t to be the timestamp for a point.
-func (p *point) SetTime(t time.Time) {
+func (p *Point) SetTime(t time.Time) {
 	p.time.SetTime(&t)
 }
 
 // Update increments the value of all of the Int and Float
 // fields randomly.
-func (p *point) Update() {
+func (p *Point) Update() {
 	for _, i := range p.Ints {
 		atomic.StoreInt64(&i.Value, rand.Int63n(100))
 	}

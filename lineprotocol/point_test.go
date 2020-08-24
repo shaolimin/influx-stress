@@ -55,7 +55,7 @@ func TestWritePoint_MockPoint(t *testing.T) {
 	}
 
 	exp := fmt.Sprintf("cpu,host=server a=100i,b=10 %v\n", testTime.UnixNano())
-	got := string(buf.Bytes())
+	got := buf.String()
 
 	if got != exp {
 		t.Errorf("Wrong data was written. got %v, exp %v", got, exp)

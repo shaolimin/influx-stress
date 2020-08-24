@@ -21,7 +21,7 @@ func TestInt_WriteTo(t *testing.T) {
 	}
 
 	exp := "a=100i"
-	got := string(buf.Bytes())
+	got := buf.String()
 
 	if got != exp {
 		t.Errorf("Wrong field data written. got %v, exp %v", got, exp)
@@ -43,7 +43,7 @@ func TestFloat_WriteTo(t *testing.T) {
 	}
 
 	exp := "a=100"
-	got := string(buf.Bytes())
+	got := buf.String()
 
 	if got != exp {
 		t.Errorf("Wrong field data written. got %v, exp %v", got, exp)

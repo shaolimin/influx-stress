@@ -7,7 +7,6 @@ import (
 )
 
 var equalSign = byte('=')
-var comma = byte(',')
 
 // Field is an aliased io.WriterTo.
 type Field io.WriterTo
