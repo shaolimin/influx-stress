@@ -1,6 +1,6 @@
 package main
 
-import "github.com/chengshiwen/influx-stress/cmd"
+import "github.com/shaolimin/influx-stress/cmd"
 
 func main() {
 	cmd.Execute()
