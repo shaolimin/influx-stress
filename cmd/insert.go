@@ -24,7 +24,8 @@ var (
 	username, password                   string
 	createCommand, dump                  string
 	seriesN, gzip                        int
-	batchSize, pointsN, pps,token        uint64
+	token                                 string 
+	batchSize, pointsN, pps        uint64
 	runtime                              time.Duration
 	tick                                 time.Duration
 	fast, quiet                          bool
@@ -186,7 +187,7 @@ func init() {
 	insertCmd.Flags().BoolVarP(&tlsSkipVerify, "tls-skip-verify", "", false, "Skip verify in for TLS")
 	insertCmd.Flags().DurationVarP(&readTimeout, "read-timeout", "", 0, "read timeout")
 	insertCmd.Flags().DurationVarP(&writeTimeout, "write-timeout", "", 0, "write timeout")
-	insertCmd.Flags().DurationVarP(&token, "token", "", 0, "token")
+	insertCmd.Flags().DurationVarP(&token, "token", "", "" , "token")
 }
 
 func client() write.Client {
