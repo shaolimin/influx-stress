@@ -1,4 +1,4 @@
-module github.com/chengshiwen/influx-stress
+module github.com/shaolimin/influx-stress
 
 go 1.14
 
