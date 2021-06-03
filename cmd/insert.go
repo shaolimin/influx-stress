@@ -24,7 +24,8 @@ var (
 	username, password                   string
 	createCommand, dump                  string
 	seriesN, gzip                        int
-	batchSize, pointsN, pps,token        uint64
+	token                                string
+	batchSize, pointsN, pps             uint64
 	runtime                              time.Duration
 	tick                                 time.Duration
 	fast, quiet                          bool
