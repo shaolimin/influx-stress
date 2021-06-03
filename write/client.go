@@ -212,9 +212,6 @@ func writeURLFromConfig(cfg ClientConfig) string {
 	if cfg.Pass != "" {
 		params.Set("p", cfg.Pass)
 	}
-	if cfg.Token != "" {
-		params.Set("t", cfg.Token)
-	}
 	if cfg.RetentionPolicy != "" {
 		params.Set("rp", cfg.RetentionPolicy)
 	}
