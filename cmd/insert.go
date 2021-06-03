@@ -201,6 +201,7 @@ func client() write.Client {
 		TLSSkipVerify:   tlsSkipVerify,
 		ReadTimeout:     readTimeout,
 		WriteTimeout:    writeTimeout,
+		Token:           token,
 		Gzip:            gzip != 0,
 	}
 
